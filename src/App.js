@@ -44,14 +44,16 @@ function App() {
   }
 
   return (
-    <div style={{ height: '100vh', display: 'flex', flexDirection: 'column' }}>
-      <div className="dashboard-container" style={{ flex: 1, display: 'flex', flexDirection: 'row', height: '100%' }}>
-        <Sidebar activeItem={activeDashboard} onSelect={setActiveDashboard} />
-        <main className="main-content" style={{ flex: 1, minWidth: 0 }}>
-          <MainHeader />
-          {dashboardContent}
-        </main>
-        <ChatPanel />
+    <div style={{ height: '100vh', display: 'flex', flexDirection: 'row' }}>
+      <Sidebar activeItem={activeDashboard} onSelect={setActiveDashboard} />
+      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', minWidth: 0 }}>
+        <MainHeader />
+        <div style={{ flex: 1, display: 'flex', flexDirection: 'row', minHeight: 0 }}>
+          <main className="main-content" style={{ flex: 1, minWidth: 0 }}>
+            {dashboardContent}
+          </main>
+          {activeDashboard !== 'Settings' && <ChatPanel />}
+        </div>
       </div>
     </div>
   );
