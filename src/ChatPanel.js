@@ -39,9 +39,10 @@ function ChatPanel() {
     try {
       const res = await fetchChatResponse(userMsg.text, 'user1', sid);
       console.log('API response:', res);
-      // Extract text from the last object in the array with content.parts[0].text
       let botText = '';
-      if (Array.isArray(res)) {
+      if (res && typeof res.text === 'string') {
+        botText = res.text;
+      } else if (Array.isArray(res)) {
         for (let i = res.length - 1; i >= 0; i--) {
           if (res[i]?.content?.parts?.[0]?.text) {
             botText = res[i].content.parts[0].text;
