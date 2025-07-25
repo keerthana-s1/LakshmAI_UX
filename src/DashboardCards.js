@@ -1,13 +1,8 @@
 import React from 'react';
-
-const cards = [
-  { title: 'Bank Accounts', value: '₹2,30,000', change: '+6.28%', positive: true },
-  { title: 'Mutual Funds', value: '₹6,00,000', change: '+12.28%', positive: true },
-  { title: 'Stocks', value: '₹4,30,000', change: '-2.89%', positive: false },
-  { title: 'US Stocks', value: '$11,000', change: '+10.29%', positive: true },
-];
+import { getDashboardCards } from './dataService';
 
 function DashboardCards() {
+  const cards = getDashboardCards();
   return (
     <section className="dashboard-cards">
       {cards.map((card) => (
