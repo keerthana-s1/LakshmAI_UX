@@ -4,6 +4,7 @@ const navItems = [
   'Dashboard',
   'Analytics',
   'My Tasks',
+  'My Wallet',
   'Accounts',
   'Settings',
 ];
@@ -13,13 +14,12 @@ function Sidebar({ activeItem, onSelect }) {
     <aside className="sidebar">
       <div className="logo">LakshmAI</div>
       <nav className="sidebar-nav">
-        <ul>
+        <ul className="sidebar-nav__list">
           {navItems.map((label) => (
             <li
               key={label}
-              className={activeItem === label ? 'active' : ''}
+              className={`sidebar-nav__item${activeItem === label ? ' active' : ''}`}
               onClick={() => onSelect(label)}
-              style={{ cursor: 'pointer' }}
             >
               {label}
             </li>
@@ -27,7 +27,10 @@ function Sidebar({ activeItem, onSelect }) {
         </ul>
       </nav>
       <div className="sidebar-bottom">
-       </div>
+        <div>Security</div>
+        <div>Help Centre</div>
+        <div className="dark-mode-toggle">Dark Mode <input type="checkbox" checked readOnly /></div>
+      </div>
     </aside>
   );
 }

@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
-import { fetchChatResponse } from './apiService';
+import React, { useState, useEffect, useRef } from 'react';
+import { fetchChatResponse, registerSession } from './apiService';
+import { v4 as uuidv4 } from 'uuid';
 import './ChatPanel.css';
 
 function getAvatar(from, name) {
@@ -15,16 +16,28 @@ function ChatPanel() {
   ]);
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
+  const [sessionId, setSessionId] = useState(null);
+  const sessionIdRef = useRef(null);
+
+  useEffect(() => {
+    if (!sessionIdRef.current) {
+      const newSessionId = uuidv4();
+      sessionIdRef.current = newSessionId;
+      setSessionId(newSessionId);
+      registerSession('fi-mcp', 'user1', newSessionId).catch(console.error);
+    }
+  }, []);
 
   const handleSend = async (e) => {
     e.preventDefault();
-    if (!input.trim()) return;
+    const sid = sessionIdRef.current;
+    if (!input.trim() || !sid) return;
     const userMsg = { from: 'user', name: 'You', text: input, time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) };
     setMessages((msgs) => [...msgs, userMsg]);
     setInput('');
     setLoading(true);
     try {
-      const res = await fetchChatResponse(userMsg.text);
+      const res = await fetchChatResponse(userMsg.text, 'user1', sid);
       console.log('API response:', res);
       // Extract text from the last object in the array with content.parts[0].text
       let botText = '';
