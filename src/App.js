@@ -1,5 +1,5 @@
 import './App.css';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Sidebar from './Sidebar';
 import MainHeader from './MainHeader';
 import DashboardCards from './DashboardCards';
@@ -7,28 +7,49 @@ import MyCard from './MyCard';
 import ExpenseChart from './ExpenseChart';
 import ChatPanel from './ChatPanel';
 import DashboardCharts from './DashboardCharts';
+import InvestmentCharts from './InvestmentCharts';
 import AnalyticsDashboard from './AnalyticsDashboard';
 import MyTasksDashboard from './MyTasksDashboard';
 import { registerSession } from './apiService';
+import { v4 as uuidv4 } from 'uuid';
 
 function App() {
   const [activeDashboard, setActiveDashboard] = useState('Dashboard');
-  const [showLogin, setShowLogin] = useState(true);
+  const [showLogin, setShowLogin] = useState(false);
   const [userId, setUserId] = useState('');
   const [password, setPassword] = useState('');
   const [loginError, setLoginError] = useState('');
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [signedIn, setSignedIn] = useState(() => {
+    return localStorage.getItem('signedIn') === 'true';
+  });
+  const [sessionId, setSessionId] = useState(null);
+
+  useEffect(() => {
+    setShowLogin(!signedIn);
+  }, [signedIn]);
 
   const handleLogin = async (e) => {
     e.preventDefault();
     setLoginError('');
     try {
-      await registerSession(userId, password);
-      setIsLoggedIn(true);
+      const newSessionId = uuidv4();
+      await registerSession(userId, password, newSessionId);
+      setSessionId(newSessionId);
+      setSignedIn(true);
+      localStorage.setItem('signedIn', 'true');
       setShowLogin(false);
     } catch (err) {
       setLoginError('Login failed. Please check your credentials.');
     }
+  };
+
+  const handleLogout = () => {
+    setSignedIn(false);
+    localStorage.removeItem('signedIn');
+    setShowLogin(true);
+    setUserId('');
+    setPassword('');
+    setSessionId(null);
   };
 
   let dashboardContent;
@@ -36,6 +57,7 @@ function App() {
     case 'Dashboard':
       dashboardContent = <>
         <DashboardCards />
+        <InvestmentCharts />
         <section className="dashboard-lower">
           <MyCard />
           <ExpenseChart />
@@ -88,12 +110,12 @@ function App() {
         <>
           <Sidebar activeItem={activeDashboard} onSelect={setActiveDashboard} />
           <div style={{ flex: 1, display: 'flex', flexDirection: 'column', minWidth: 0 }}>
-            <MainHeader />
+            <MainHeader signedIn={signedIn} onLogout={handleLogout} />
             <div style={{ flex: 1, display: 'flex', flexDirection: 'row', minHeight: 0 }}>
               <main className="main-content" style={{ flex: 1, minWidth: 0 }}>
                 {dashboardContent}
               </main>
-              {activeDashboard !== 'Settings' && <ChatPanel />}
+              {activeDashboard !== 'Settings' && <ChatPanel userId={userId} sessionId={sessionId} />}
             </div>
           </div>
         </>

@@ -1,6 +1,5 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { fetchChatResponse, registerSession } from './apiService';
-import { v4 as uuidv4 } from 'uuid';
+import React, { useState } from 'react';
+import { fetchChatResponse } from './apiService';
 import './ChatPanel.css';
 
 function getAvatar(from, name) {
@@ -10,35 +9,22 @@ function getAvatar(from, name) {
   return <div className="chat-avatar chat-avatar--user">J</div>;
 }
 
-function ChatPanel() {
+function ChatPanel({ userId, sessionId }) {
   const [messages, setMessages] = useState([
     { from: 'bot', name: 'LakshmAI', text: 'How may I help you?', time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) }
   ]);
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
-  const [sessionId, setSessionId] = useState(null);
-  const sessionIdRef = useRef(null);
-
-  useEffect(() => {
-    if (!sessionIdRef.current) {
-      const newSessionId = uuidv4();
-      sessionIdRef.current = newSessionId;
-      setSessionId(newSessionId);
-      registerSession('fi-mcp', 'user1', newSessionId).catch(console.error);
-    }
-  }, []);
 
   const handleSend = async (e) => {
     e.preventDefault();
-    const sid = sessionIdRef.current;
-    if (!input.trim() || !sid) return;
+    if (!input.trim() || !sessionId || !userId) return;
     const userMsg = { from: 'user', name: 'You', text: input, time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) };
     setMessages((msgs) => [...msgs, userMsg]);
     setInput('');
     setLoading(true);
     try {
-      const res = await fetchChatResponse(userMsg.text, 'user1', sid);
-      console.log('API response:', res);
+      const res = await fetchChatResponse(userMsg.text, userId, sessionId);
       let botText = '';
       if (res && typeof res.text === 'string') {
         botText = res.text;

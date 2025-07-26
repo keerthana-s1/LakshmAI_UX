@@ -1,4 +1,4 @@
-export async function registerSession(userId, password) {
+export async function registerSession(userId, password, sessionId) {
   const url = 'http://localhost:5142/auth/login';
   const response = await fetch(url, {
     method: 'POST',
@@ -8,14 +8,15 @@ export async function registerSession(userId, password) {
     },
     body: JSON.stringify({
       userId,
-      password
+      password,
+      sessionId
     })
   });
   if (!response.ok) throw new Error('Session registration failed');
   return response.json();
 }
 
-export async function fetchChatResponse(message, userId = 'user1', sessionId = 'abcde') {
+export async function fetchChatResponse(message, userId, sessionId) {
   const response = await fetch('http://localhost:5142/chat/send', {
     method: 'POST',
     headers: {

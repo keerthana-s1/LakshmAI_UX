@@ -1,15 +1,40 @@
-import React from 'react';
-import { getDashboardCards } from './dataService';
+import React, { useEffect, useState } from 'react';
 
 function DashboardCards() {
-  const cards = getDashboardCards();
+  const [cards, setCards] = useState([]);
+
+  useEffect(() => {
+    fetch('/dashboardWidgets.json')
+      .then(res => res.json())
+      .then(data => setCards(data.dashboardWidgets.filter(w => w.type === 'card')));
+  }, []);
+
+  const formatValue = (value, currency) => {
+    if (!value && value !== 0) {
+      return 'N/A';
+    }
+    if (currency === '₹') {
+      return `₹${value.toLocaleString('en-IN')}`;
+    }
+    return `${currency}${value.toLocaleString()}`;
+  };
+
+  const formatChange = (percentage, type) => {
+    const sign = type === 'positive' ? '+' : '';
+    return `${sign}${percentage.toFixed(2)}%`;
+  };
+
   return (
     <section className="dashboard-cards">
       {cards.map((card) => (
-        <div className="card" key={card.title} style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', justifyContent: 'center', height: '100%' }}>
+        <div className="card" key={card.id}>
           <span className="card-title">{card.title}</span>
-          <span style={{ fontSize: '1.7rem', fontWeight: 700, marginBottom: 4 }}>{card.value}</span>
-          <span style={{ color: card.positive ? '#3ecf8e' : '#ff4d6d', fontWeight: 600, fontSize: '1.1rem' }}>{card.change}</span>
+          <span className="card-value">{formatValue(card.currentValue, card.currency)}</span>
+          {card.changePercentage !== undefined && card.changeType && (
+            <span className="card-change" style={{ color: card.changeType === 'positive' ? '#3ecf8e' : '#ff4d6d' }}>
+              {formatChange(card.changePercentage, card.changeType)}
+            </span>
+          )}
         </div>
       ))}
     </section>

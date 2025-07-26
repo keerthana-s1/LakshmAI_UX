@@ -1,0 +1,402 @@
+{
+  "dashboardConfig": {
+    "theme": "light",
+    "currency": "₹",
+    "language": "en-IN",
+    "lastUpdated": "2024-07-30T12:00:00Z"
+  },
+  "dashboardWidgets": [
+    {
+      "id": "bankAccounts",
+      "title": "Bank Accounts",
+      "type": "card",
+      "chartType": "line",
+      "chartData": {
+        "labels": [
+          "2024-07-22",
+          "2024-07-23",
+          "2024-07-24",
+          "2024-07-25",
+          "2024-07-26",
+          "2024-07-27",
+          "2024-07-28"
+        ],
+        "datasets": [
+          {
+            "label": "Account Balance",
+            "data": [
+              10000,
+              10500,
+              11000,
+              10800,
+              11200,
+              11500,
+              12000
+            ],
+            "borderColor": "#2563EB",
+            "fill": false
+          }
+        ]
+      },
+      "currentValue": 12000,
+      "currency": "₹",
+      "changePercentage": 0.05,
+      "changeType": "positive"
+    },
+    {
+      "id": "mutualFunds",
+      "title": "Mutual Funds",
+      "type": "card",
+      "chartType": "line",
+      "chartData": {
+        "labels": [
+          "2024-07-22",
+          "2024-07-23",
+          "2024-07-24",
+          "2024-07-25",
+          "2024-07-26",
+          "2024-07-27",
+          "2024-07-28"
+        ],
+        "datasets": [
+          {
+            "label": "Investment Value",
+            "data": [
+              5000,
+              5100,
+              5200,
+              5300,
+              5400,
+              5500,
+              5600
+            ],
+            "borderColor": "#10B981",
+            "fill": false
+          }
+        ]
+      },
+      "currentValue": 5600,
+      "currency": "₹",
+      "changePercentage": 0.03,
+      "changeType": "positive"
+    },
+    {
+      "id": "stocks",
+      "title": "Stocks",
+      "type": "card",
+      "chartType": "line",
+      "chartData": {
+        "labels": [
+          "2024-07-22",
+          "2024-07-23",
+          "2024-07-24",
+          "2024-07-25",
+          "2024-07-26",
+          "2024-07-27",
+          "2024-07-28"
+        ],
+        "datasets": [
+          {
+            "label": "Investment Value",
+            "data": [
+              2500,
+              2550,
+              2600,
+              2650,
+              2700,
+              2750,
+              2800
+            ],
+            "borderColor": "#EAB308",
+            "fill": false
+          }
+        ]
+      },
+      "currentValue": 2800,
+      "currency": "₹",
+      "changePercentage": 0.02,
+      "changeType": "positive"
+    },
+    {
+      "id": "usStocks",
+      "title": "US Stocks",
+      "type": "card",
+      "chartType": "line",
+      "chartData": {
+        "labels": [
+          "2024-07-22",
+          "2024-07-23",
+          "2024-07-24",
+          "2024-07-25",
+          "2024-07-26",
+          "2024-07-27",
+          "2024-07-28"
+        ],
+        "datasets": [
+          {
+            "label": "Investment Value",
+            "data": [
+              1000,
+              1010,
+              1020,
+              1030,
+              1040,
+              1050,
+              1060
+            ],
+            "borderColor": "#F43F5E",
+            "fill": false
+          }
+        ]
+      },
+      "currentValue": 1060,
+      "currency": "₹",
+      "changePercentage": 0.01,
+      "changeType": "positive"
+    },
+    {
+      "id": "creditCards",
+      "title": "Credit Cards",
+      "type": "card",
+      "chartType": "line",
+      "chartData": {
+        "labels": [
+          "2024-07-22",
+          "2024-07-23",
+          "2024-07-24",
+          "2024-07-25",
+          "2024-07-26",
+          "2024-07-27",
+          "2024-07-28"
+        ],
+        "datasets": [
+          {
+            "label": "Outstanding Balance",
+            "data": [
+              500,
+              480,
+              460,
+              440,
+              420,
+              400,
+              380
+            ],
+            "borderColor": "#6366F1",
+            "fill": false
+          }
+        ]
+      },
+      "currentValue": 380,
+      "currency": "₹",
+      "changePercentage": 0.05,
+      "changeType": "negative"
+    },
+    {
+      "id": "netWorth",
+      "title": "Net Worth",
+      "type": "card",
+      "chartType": "line",
+      "chartData": {
+        "labels": [
+          "2024-07-22",
+          "2024-07-23",
+          "2024-07-24",
+          "2024-07-25",
+          "2024-07-26",
+          "2024-07-27",
+          "2024-07-28"
+        ],
+        "datasets": [
+          {
+            "label": "Net Worth",
+            "data": [
+              18000,
+              18640,
+              19260,
+              19740,
+              20480,
+              21300,
+              22140
+            ],
+            "borderColor": "#064E3B",
+            "fill": false
+          }
+        ]
+      },
+      "currentValue": 22140,
+      "currency": "₹",
+      "changePercentage": 0.04,
+      "changeType": "positive"
+    },
+    {
+      "id": "expenseBreakdown",
+      "title": "Expense Breakdown",
+      "type": "chart",
+      "dashboard": "homeDashboard",
+      "chartType": "doughnut",
+      "chartData": {
+        "labels": [
+          "Food",
+          "Travel",
+          "Entertainment",
+          "Shopping"
+        ],
+        "datasets": [
+          {
+            "data": [
+              3000,
+              1500,
+              1000,
+              2000
+            ],
+            "backgroundColor": [
+              "#EF4444",
+              "#3B82F6",
+              "#10B981",
+              "#EAB308"
+            ],
+            "hoverBackgroundColor": [
+              "#EF4444",
+              "#3B82F6",
+              "#10B981",
+              "#EAB308"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "incomeVsExpense",
+      "title": "Income vs Expense",
+      "type": "chart",
+      "dashboard": "homeDashboard",
+      "chartType": "bar",
+      "chartData": {
+        "labels": [
+          "July"
+        ],
+        "datasets": [
+          {
+            "label": "Income",
+            "data": [
+              10000
+            ],
+            "backgroundColor": "#10B981"
+          },
+          {
+            "label": "Expense",
+            "data": [
+              7500
+            ],
+            "backgroundColor": "#EF4444"
+          }
+        ]
+      }
+    },
+    {
+      "id": "creditScore",
+      "title": "Credit Score",
+      "type": "card",
+      "value": 750,
+      "scale": "300-900",
+      "color": "#3B82F6"
+    },
+    {
+      "id": "investmentPortfolio",
+      "title": "Investment Portfolio",
+      "type": "chart",
+      "dashboard": "homeDashboard",
+      "chartType": "pie",
+      "chartData": {
+        "labels": [
+          "Mutual Funds",
+          "Stocks",
+          "US Stocks"
+        ],
+        "datasets": [
+          {
+            "data": [
+              5600,
+              2800,
+              1060
+            ],
+            "backgroundColor": [
+              "#10B981",
+              "#EAB308",
+              "#F43F5E"
+            ],
+            "hoverBackgroundColor": [
+              "#10B981",
+              "#EAB308",
+              "#F43F5E"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "epfBalance",
+      "title": "EPF Balance",
+      "type": "card",
+      "currentValue": 15000,
+      "currency": "₹",
+      "changePercentage": 0.01,
+      "changeType": "positive"
+    }
+  ],
+  "userProfile": {
+    "name": "John Doe",
+    "phoneNumber": "9876543210",
+    "email": "john.doe@example.com",
+    "address": "123 Main St, Anytown",
+    "dob": "1990-01-01"
+  },
+  "notifications": [
+    {
+      "id": "notification1",
+      "type": "info",
+      "message": "Your credit card bill is due soon.",
+      "date": "2024-07-31"
+    },
+    {
+      "id": "notification2",
+      "type": "alert",
+      "message": "Low balance in your savings account.",
+      "date": "2024-07-30"
+    }
+  ],
+  "quickActions": [
+    {
+      "id": "quickAction1",
+      "label": "Pay Bills",
+      "icon": "bill"
+    },
+    {
+      "id": "quickAction2",
+      "label": "Transfer Money",
+      "icon": "transfer"
+    },
+    {
+      "id": "quickAction3",
+      "label": "Invest",
+      "icon": "invest"
+    }
+  ],
+  "dataSummary": {
+    "totalAssets": 22140,
+    "totalLiabilities": 380,
+    "netWorth": 21760,
+    "creditScore": 750,
+    "totalTransactions": 100,
+    "investmentReturns": 0.05,
+    "epfBalance": 15000,
+    "stockHoldings": 2800,
+    "mutualFundValue": 5600,
+    "savingsBalance": 12000,
+    "usSecuritiesValue": 1060,
+    "creditCardOutstanding": 380,
+    "totalCreditAccounts": 1,
+    "activeCreditAccounts": 1,
+    "lastDataUpdate": "2024-07-30T12:00:00Z"
+  }
+}

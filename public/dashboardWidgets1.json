@@ -1,0 +1,182 @@
+{
+  "dashboardWidgets": [
+    {
+      "id": "bankAccounts",
+      "title": "Bank Accounts",
+      "type": "card",
+      "chartType": "line",
+      "chartData": {
+        "labels": ["2024-01-01", "2024-02-01", "2024-03-01", "2024-04-01"],
+        "datasets": [
+          {
+            "label": "Balance",
+            "data": [180000, 185000, 190000, 195297],
+            "backgroundColor": "#6A5ACD",
+            "borderColor": "#6A5ACD"
+          }
+        ]
+      },
+      "currentValue": 195297,
+      "currency": "₹",
+      "changePercentage": 6.29,
+      "changeType": "positive"
+    },
+    {
+      "id": "mutualFunds",
+      "title": "Mutual Funds",
+      "type": "card",
+      "chartType": "line",
+      "chartData": {
+        "labels": ["2024-01-01", "2024-02-01", "2024-03-01", "2024-04-01"],
+        "datasets": [
+          {
+            "label": "Value",
+            "data": [150000, 160000, 170000, 177605],
+            "backgroundColor": "#87CEEB",
+            "borderColor": "#87CEEB"
+          }
+        ]
+      },
+      "currentValue": 177605,
+      "currency": "₹",
+      "changePercentage": 12.29,
+      "changeType": "positive"
+    },
+    {
+      "id": "stocks",
+      "title": "Stocks",
+      "type": "card",
+      "chartType": "line",
+      "chartData": {
+        "labels": ["2024-01-01", "2024-02-01", "2024-03-01", "2024-04-01"],
+        "datasets": [
+          {
+            "label": "Value",
+            "data": [210000, 205000, 202000, 200642],
+            "backgroundColor": "#FFD700",
+            "borderColor": "#FFD700"
+          }
+        ]
+      },
+      "currentValue": 200642,
+      "currency": "₹",
+      "changePercentage": -2.00,
+      "changeType": "negative"
+    },
+    {
+      "id": "usStocks",
+      "title": "US Stocks",
+      "type": "card",
+      "chartType": "line",
+      "chartData": {
+        "labels": ["2024-01-01", "2024-02-01", "2024-03-01", "2024-04-01"],
+        "datasets": [
+          {
+            "label": "Value",
+            "data": [25000, 27000, 29000, 30071],
+            "backgroundColor": "#32CD32",
+            "borderColor": "#32CD32"
+          }
+        ]
+      },
+      "currentValue": 30071,
+      "currency": "₹",
+      "changePercentage": 10.29,
+      "changeType": "positive"
+    },
+    {
+      "id": "expenseBreakdown",
+      "title": "Expense Breakdown",
+      "type": "chart",
+      "dashboard": "homeDashboard",
+      "chartType": "doughnut",
+      "chartData": {
+        "labels": ["Food & Dining", "Transportation", "Shopping"],
+        "datasets": [
+          {
+            "label": "Expenses",
+            "data": [3500, 2500, 1500],
+            "backgroundColor": ["#6A5ACD", "#87CEEB", "#FFD700"]
+          }
+        ]
+      },
+      "total": 7500,
+      "period": "April 2024"
+    },
+    {
+      "id": "creditCardOutstanding",
+      "title": "Credit Card Outstanding",
+      "type": "chart",
+      "dashboard": "homeDashboard",
+      "chartType": "line",
+      "chartData": {
+        "labels": ["2024-01-01", "2024-02-01", "2024-03-01", "2024-04-01"],
+        "datasets": [
+          {
+            "label": "Outstanding",
+            "data": [8000, 7000, 6000, 5000],
+            "backgroundColor": "#FF6347",
+            "borderColor": "#FF6347"
+          }
+        ]
+      },
+      "currentOutstanding": 5000,
+      "cardNumber": "XXXXXX2724",
+      "expiryDate": "09/25"
+    },
+    {
+      "id": "creditScoreHistory",
+      "title": "Credit Score History",
+      "type": "chart",
+      "dashboard": "homeDashboard",
+      "chartType": "line",
+      "chartData": {
+        "labels": ["2019-10-01", "2020-01-01", "2020-04-01"],
+        "datasets": [
+          {
+            "label": "Credit Score",
+            "data": [720, 735, 746],
+            "backgroundColor": "#4682B4",
+            "borderColor": "#4682B4"
+          }
+        ]
+      },
+      "currentScore": 746
+    },
+    {
+      "id": "netWorthOverview",
+      "title": "Net Worth Overview",
+      "type": "chart",
+      "dashboard": "homeDashboard",
+      "chartType": "bar",
+      "chartData": {
+        "labels": ["Assets", "Liabilities"],
+        "datasets": [
+          {
+            "label": "Value",
+            "data": [750726, 64000],
+            "backgroundColor": ["#32CD32", "#FF6347"]
+          }
+        ]
+      },
+      "netWorth": 686726
+    },
+    {
+      "id": "assetBreakdown",
+      "title": "Asset Breakdown",
+      "type": "chart",
+      "dashboard": "homeDashboard",
+      "chartType": "pie",
+      "chartData": {
+        "labels": ["Savings Accounts", "Mutual Funds", "Indian Securities", "EPF", "US Securities"],
+        "datasets": [
+          {
+            "label": "Assets",
+            "data": [195297, 177605, 200642, 211111, 30071],
+            "backgroundColor": ["#6A5ACD", "#87CEEB", "#FFD700", "#32CD32", "#FF6347"]
+          }
+        ]
+      }
+    }
+  ]
+} 

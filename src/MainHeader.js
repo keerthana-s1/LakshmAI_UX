@@ -1,8 +1,27 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import './MainHeader.css';
 
-function MainHeader() {
+function MainHeader({ signedIn, onLogout }) {
   const [notifOpen, setNotifOpen] = useState(false);
+  const [showDropdown, setShowDropdown] = useState(false);
+  const dropdownRef = useRef(null);
+
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setShowDropdown(false);
+      }
+    }
+    if (showDropdown) {
+      document.addEventListener('mousedown', handleClickOutside);
+    } else {
+      document.removeEventListener('mousedown', handleClickOutside);
+    }
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [showDropdown]);
+
   const notifications = [
     {
       avatar: 'L',
@@ -68,10 +87,18 @@ function MainHeader() {
             </div>
           )}
         </div>
-        <div className="main-header__user">
-          <span className="main-header__user-avatar">J</span>
-          <span className="main-header__user-name">John Doe</span>
-        </div>
+        {signedIn && (
+          <div className="profile-menu" ref={dropdownRef}>
+            <div className="profile-icon" onClick={() => setShowDropdown(v => !v)}>
+              <span role="img" aria-label="profile">👤</span>
+            </div>
+            {showDropdown && (
+              <div className="profile-dropdown">
+                <button className="profile-dropdown-item" onClick={onLogout}>Logout</button>
+              </div>
+            )}
+          </div>
+        )}
       </div>
     </header>
   );
