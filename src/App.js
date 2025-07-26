@@ -1,5 +1,5 @@
 import './App.css';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Sidebar from './Sidebar';
 import MainHeader from './MainHeader';
 import DashboardCards from './DashboardCards';
@@ -23,10 +23,49 @@ function App() {
     return localStorage.getItem('signedIn') === 'true';
   });
   const [sessionId, setSessionId] = useState(null);
+  
+  // Dashboard data state
+  const [dashboardData, setDashboardData] = useState(null);
+  const [dashboardLoading, setDashboardLoading] = useState(false);
+  const [dashboardError, setDashboardError] = useState(null);
+  
+  // Ref to prevent multiple API calls in StrictMode
+  const hasLoadedData = useRef(false);
 
   useEffect(() => {
     setShowLogin(!signedIn);
   }, [signedIn]);
+
+  // Load dashboard data once when home dashboard is active and user is signed in
+  useEffect(() => {
+    if (activeDashboard === 'Dashboard' && signedIn && !dashboardData && !hasLoadedData.current) {
+      hasLoadedData.current = true;
+      
+      const fetchDashboardData = async () => {
+        try {
+          setDashboardLoading(true);
+          setDashboardError(null);
+          
+          // Temporarily use dashboardWidgets1.json instead of API
+          const response = await fetch('/dashboardWidgets1.json');
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+          const data = await response.json();
+          setDashboardData(data);
+          
+        } catch (err) {
+          console.error('Error loading dashboard data:', err);
+          setDashboardError('Failed to load dashboard data');
+          setDashboardData(null);
+        } finally {
+          setDashboardLoading(false);
+        }
+      };
+
+      fetchDashboardData();
+    }
+  }, [activeDashboard, signedIn]);
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -38,6 +77,9 @@ function App() {
       setSignedIn(true);
       localStorage.setItem('signedIn', 'true');
       setShowLogin(false);
+      // Clear dashboard data and reset ref to trigger fresh API call after login
+      setDashboardData(null);
+      hasLoadedData.current = false;
     } catch (err) {
       setLoginError('Login failed. Please check your credentials.');
     }
@@ -50,22 +92,65 @@ function App() {
     setUserId('');
     setPassword('');
     setSessionId(null);
+    setDashboardData(null);
+    hasLoadedData.current = false;
   };
 
   let dashboardContent;
   switch (activeDashboard) {
     case 'Dashboard':
-      dashboardContent = <>
-        <DashboardCards />
-        <InvestmentCharts />
-        <section className="dashboard-lower">
-          <MyCard />
-          <ExpenseChart />
-        </section>
-        <section className="dashboard-charts">
-          <DashboardCharts />
-        </section>
-      </>;
+      if (dashboardLoading) {
+        dashboardContent = (
+          <div style={{ 
+            display: 'flex', 
+            justifyContent: 'center', 
+            alignItems: 'center', 
+            height: '100%',
+            color: '#b0b3c7',
+            fontSize: '1.1rem'
+          }}>
+            Loading dashboard...
+          </div>
+        );
+      } else if (dashboardError) {
+        dashboardContent = (
+          <div style={{ 
+            display: 'flex', 
+            justifyContent: 'center', 
+            alignItems: 'center', 
+            height: '100%',
+            color: '#ef4444',
+            fontSize: '1.1rem'
+          }}>
+            {dashboardError}
+          </div>
+        );
+      } else if (dashboardData) {
+        dashboardContent = <>
+          <DashboardCards dashboardData={dashboardData} />
+          <InvestmentCharts dashboardData={dashboardData} />
+          <section className="dashboard-lower">
+            <MyCard />
+            <ExpenseChart dashboardData={dashboardData} />
+          </section>
+          <section className="dashboard-charts">
+            <DashboardCharts dashboardData={dashboardData} />
+          </section>
+        </>;
+      } else {
+        dashboardContent = (
+          <div style={{ 
+            display: 'flex', 
+            justifyContent: 'center', 
+            alignItems: 'center', 
+            height: '100%',
+            color: '#b0b3c7',
+            fontSize: '1.1rem'
+          }}>
+            No dashboard data available
+          </div>
+        );
+      }
       break;
     case 'Analytics':
       dashboardContent = <AnalyticsDashboard />;

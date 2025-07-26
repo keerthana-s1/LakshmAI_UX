@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 
 function renderDoughnutChart(chartData) {
   const { datasets, labels } = chartData;
@@ -48,18 +48,10 @@ function formatValue(value, currency = '₹') {
   return `${currency}${value.toLocaleString()}`;
 }
 
-function ExpenseChart() {
-  const [widget, setWidget] = useState(null);
+function ExpenseChart({ dashboardData }) {
+  if (!dashboardData) return null;
 
-  useEffect(() => {
-    fetch('/dashboardWidgets.json')
-      .then(res => res.json())
-      .then(data => {
-        const expenseWidget = data.dashboardWidgets.find(w => w.id === 'expenseBreakdown');
-        setWidget(expenseWidget);
-      });
-  }, []);
-
+  const widget = dashboardData.dashboardWidgets.find(w => w.id === 'expenseBreakdown');
   if (!widget || !widget.chartData) return null;
 
   const { chartData, period } = widget;
@@ -67,7 +59,7 @@ function ExpenseChart() {
   const total = widget.total !== undefined ? widget.total : (chartData && chartData.datasets && chartData.datasets[0] ? chartData.datasets[0].data.reduce((a, b) => a + b, 0) : undefined);
 
   return (
-    <div className="expense-chart" style={{ 
+    <div className="expense-chart" style={{
       display: 'flex', 
       flexDirection: 'column', 
       alignItems: 'center', 
@@ -80,9 +72,9 @@ function ExpenseChart() {
       width: '100%'
     }}>
       {/* Title */}
-      <div style={{ 
+      <div style={{
         fontWeight: 700, 
-        fontSize: '1.1rem', 
+        fontSize: '1.1rem',
         marginBottom: '16px', 
         textAlign: 'center',
         color: '#ffffff',
@@ -90,11 +82,11 @@ function ExpenseChart() {
       }}>
         Expense Breakdown
       </div>
-      
+
       {/* Chart and Total Section */}
-      <div style={{ 
-        display: 'flex', 
-        alignItems: 'center', 
+      <div style={{
+        display: 'flex',
+        alignItems: 'center',
         justifyContent: 'space-between', 
         width: '100%',
         marginBottom: '20px'
@@ -102,7 +94,7 @@ function ExpenseChart() {
         <div style={{ flex: 1, display: 'flex', justifyContent: 'center' }}>
           {renderDoughnutChart(chartData)}
         </div>
-        <div style={{ 
+        <div style={{
           flex: 1, 
           textAlign: 'center',
           paddingLeft: '16px'
@@ -124,33 +116,33 @@ function ExpenseChart() {
           </div>
         </div>
       </div>
-      
+
       {/* Category Breakdown */}
-      <div style={{ 
-        display: 'flex', 
+      <div style={{
+        display: 'flex',
         flexDirection: 'column',
         gap: '8px', 
         width: '100%',
         marginBottom: '20px'
       }}>
         {chartData.labels.map((label, i) => (
-          <div key={i} style={{ 
-            display: 'flex', 
-            justifyContent: 'space-between', 
+          <div key={i} style={{
+            display: 'flex',
             alignItems: 'center',
+            justifyContent: 'space-between',
             padding: '8px 12px',
             background: 'rgba(255,255,255,0.03)',
             borderRadius: '6px',
             border: '1px solid rgba(255,255,255,0.05)'
           }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-              <div style={{ 
-                width: '10px', 
-                height: '10px', 
-                borderRadius: '50%', 
+              <div style={{
+                width: '10px',
+                height: '10px',
+                borderRadius: '50%',
                 backgroundColor: Array.isArray(chartData.datasets[0].backgroundColor) ? chartData.datasets[0].backgroundColor[i] : chartData.datasets[0].backgroundColor
               }} />
-              <span style={{ 
+              <span style={{
                 color: '#b0b3c7', 
                 fontSize: '0.85rem',
                 fontWeight: 500
@@ -158,7 +150,7 @@ function ExpenseChart() {
                 {label}
               </span>
             </div>
-            <span style={{ 
+            <span style={{
               color: '#ffffff', 
               fontWeight: 600,
               fontSize: '0.9rem'
@@ -180,16 +172,16 @@ function ExpenseChart() {
           {period}
         </div>
       )}
-      
+
       {/* Button */}
-      <button style={{ 
+      <button style={{
         background: 'linear-gradient(135deg, #6c63ff 0%, #5a52d5 100%)',
-        color: '#ffffff', 
-        border: 'none', 
-        borderRadius: '10px', 
-        padding: '10px 20px', 
+        color: '#ffffff',
+        border: 'none',
+        borderRadius: '10px',
+        padding: '10px 20px',
         fontWeight: 600, 
-        cursor: 'pointer', 
+        cursor: 'pointer',
         width: '100%',
         fontSize: '0.9rem',
         transition: 'all 0.2s ease',
