@@ -1,6 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 
 function renderLineChart(chartData, color) {
+  if (!chartData || !chartData.datasets || !chartData.datasets[0] || !chartData.datasets[0].data) {
+    return <div style={{ color: '#b0b3c7', textAlign: 'center', padding: '20px' }}>No data available</div>;
+  }
+
   const { labels, datasets } = chartData;
   const dataset = datasets[0];
   const max = Math.max(...dataset.data);
@@ -11,6 +15,7 @@ function renderLineChart(chartData, color) {
   const chartHeight = height - 2 * margin;
   const chartWidth = width - 2 * margin;
   const points = dataset.data.map((val, i) => `${margin + i * (chartWidth / (dataset.data.length - 1))},${height - margin - ((val - min) / (max - min || 1)) * chartHeight}`);
+
   return (
     <svg width={width} height={height} style={{ background: 'none' }}>
       {/* Grid lines and Y axis labels */}
@@ -25,7 +30,7 @@ function renderLineChart(chartData, color) {
         );
       })}
       {/* X axis labels */}
-      {labels.map((label, i) => (
+      {labels && labels.map((label, i) => (
         <text
           key={i}
           x={margin + i * (chartWidth / (labels.length - 1))}
@@ -72,6 +77,10 @@ function renderLineChart(chartData, color) {
 }
 
 function renderBarChart(chartData) {
+  if (!chartData || !chartData.datasets || !chartData.datasets[0] || !chartData.datasets[0].data) {
+    return <div style={{ color: '#b0b3c7', textAlign: 'center', padding: '20px' }}>No data available</div>;
+  }
+
   const { labels, datasets } = chartData;
   // Calculate max value across all datasets
   const allData = datasets.flatMap(dataset => dataset.data);
@@ -84,7 +93,7 @@ function renderBarChart(chartData) {
   const groupWidth = chartWidth / labels.length;
   const barWidth = groupWidth * 0.7 / datasets.length; // 70% of group width divided among datasets
   const groupOffset = groupWidth * 0.15; // 15% margin on each side of group
-
+  
   return (
     <svg width={width} height={height} style={{ background: 'none' }}>
       {/* Grid lines and Y axis labels */}
@@ -99,7 +108,7 @@ function renderBarChart(chartData) {
         );
       })}
       {/* X axis labels */}
-      {labels.map((label, i) => (
+      {labels && labels.map((label, i) => (
         <text
           key={i}
           x={margin + i * groupWidth + groupWidth / 2}
@@ -110,7 +119,7 @@ function renderBarChart(chartData) {
         >{label}</text>
       ))}
       {/* Bars and values for all datasets, grouped by label */}
-      {labels.map((label, i) => (
+      {labels && labels.map((label, i) => (
         datasets.map((dataset, datasetIndex) => {
           const val = dataset.data[i];
           const x = margin + i * groupWidth + groupOffset + datasetIndex * barWidth + barWidth / 2;
@@ -145,6 +154,10 @@ function renderBarChart(chartData) {
 }
 
 function renderPieOrDoughnut(chartData, type = 'pie') {
+  if (!chartData || !chartData.datasets || !chartData.datasets[0] || !chartData.datasets[0].data) {
+    return <div style={{ color: '#b0b3c7', textAlign: 'center', padding: '20px' }}>No data available</div>;
+  }
+
   const { datasets, labels } = chartData;
   const data = datasets[0].data;
   const colors = datasets[0].backgroundColor;
@@ -199,9 +212,9 @@ function renderPieOrDoughnut(chartData, type = 'pie') {
   );
 }
 
-
-
 function ChartLegend({ labels, colors }) {
+  if (!labels || !colors) return null;
+  
   return (
     <div className="chart-legend">
       {labels.map((label, i) => (
@@ -214,16 +227,20 @@ function ChartLegend({ labels, colors }) {
   );
 }
 
-function DashboardCharts() {
-  const [widgets, setWidgets] = useState([]);
+function DashboardCharts({ dashboardData }) {
+  if (!dashboardData) return null;
 
-  useEffect(() => {
-    fetch('/dashboardWidgets.json')
-      .then(res => res.json())
-      .then(data => setWidgets(data.dashboardWidgets.filter(w => w.type === 'chart' && w.dashboard === 'homeDashboard')));
-  }, []);
+  const widgets = dashboardData.dashboardWidgets.filter(w => 
+    w.type === 'chart' && 
+    w.dashboard === 'homeDashboard' && 
+    w.id !== 'expenseBreakdown'
+  );
 
   const renderChart = (widget) => {
+    if (!widget || !widget.chartData) {
+      return <div style={{ color: '#b0b3c7', textAlign: 'center', padding: '20px' }}>No chart data available</div>;
+    }
+
     switch (widget.chartType) {
       case 'line':
         return renderLineChart(widget.chartData);
@@ -234,7 +251,7 @@ function DashboardCharts() {
       case 'doughnut':
         return renderPieOrDoughnut(widget.chartData, 'doughnut');
       default:
-        return null;
+        return <div style={{ color: '#b0b3c7', textAlign: 'center', padding: '20px' }}>Unsupported chart type</div>;
     }
   };
 
@@ -252,7 +269,7 @@ function DashboardCharts() {
         <div key={widget.id} className={`chart-card ${widget.chartType}`}>
           <div className="chart-title">{widget.title}</div>
           {renderChart(widget)}
-          {(widget.chartType === 'pie' || widget.chartType === 'doughnut') && widget.chartData.labels && (
+          {(widget.chartType === 'pie' || widget.chartType === 'doughnut') && widget.chartData && widget.chartData.labels && (
             <ChartLegend labels={widget.chartData.labels} colors={widget.chartData.datasets[0].backgroundColor} />
           )}
         </div>

@@ -1,6 +1,59 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
+
+function getInvestmentIcon(cardId) {
+  const iconStyle = {
+    width: '20px',
+    height: '20px',
+    color: '#6c63ff',
+    marginRight: '8px'
+  };
+
+  switch (cardId) {
+    case 'bankAccounts':
+      return (
+        <svg style={iconStyle} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+          <rect x="2" y="8" width="20" height="12" rx="2" ry="2"/>
+          <path d="M2 12h20"/>
+          <path d="M6 16h4"/>
+        </svg>
+      );
+    case 'mutualFunds':
+      return (
+        <svg style={iconStyle} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+          <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+          <circle cx="12" cy="12" r="3"/>
+        </svg>
+      );
+    case 'stocks':
+      return (
+        <svg style={iconStyle} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+          <path d="M3 3v18h18"/>
+          <path d="M18.7 8l-5.1 5.2-2.8-2.7L7 14.3"/>
+        </svg>
+      );
+    case 'usStocks':
+      return (
+        <svg style={iconStyle} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+          <path d="M3 3v18h18"/>
+          <path d="M18.7 8l-5.1 5.2-2.8-2.7L7 14.3"/>
+          <circle cx="18" cy="6" r="2"/>
+        </svg>
+      );
+    default:
+      return (
+        <svg style={iconStyle} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+          <circle cx="12" cy="12" r="10"/>
+          <path d="M12 6v6l4 2"/>
+        </svg>
+      );
+  }
+}
 
 function renderLineChart(chartData, color) {
+  if (!chartData || !chartData.datasets || !chartData.datasets[0] || !chartData.datasets[0].data) {
+    return <div style={{ color: '#b0b3c7', textAlign: 'center', padding: '20px' }}>No data available</div>;
+  }
+
   const { labels, datasets } = chartData;
   const dataset = datasets[0];
   const max = Math.max(...dataset.data);
@@ -78,20 +131,13 @@ function formatChange(percentage, type) {
   return `${sign}${percentage.toFixed(2)}%`;
 }
 
-function InvestmentCharts() {
-  const [investmentCards, setInvestmentCards] = useState([]);
+function InvestmentCharts({ dashboardData }) {
+  if (!dashboardData) return null;
 
-  useEffect(() => {
-    fetch('/dashboardWidgets.json')
-      .then(res => res.json())
-      .then(data => {
-        const investmentData = data.dashboardWidgets.filter(w => 
-          w.type === 'card' && 
-          ['bankAccounts', 'mutualFunds', 'stocks', 'usStocks'].includes(w.id)
-        );
-        setInvestmentCards(investmentData);
-      });
-  }, []);
+  const investmentCards = dashboardData.dashboardWidgets.filter(w => 
+    w.type === 'card' && 
+    ['bankAccounts', 'mutualFunds', 'stocks', 'usStocks'].includes(w.id)
+  );
 
   if (investmentCards.length === 0) return null;
 
@@ -109,70 +155,75 @@ function InvestmentCharts() {
           borderRadius: '16px',
           padding: '24px',
           border: '1px solid rgba(255,255,255,0.05)',
-          boxShadow: '0 4px 20px rgba(0,0,0,0.1)'
+          boxShadow: '0 4px 20px rgba(0,0,0,0.1)',
+          position: 'relative'
         }}>
-          {/* Header */}
+          {/* Header with Icon and Title */}
           <div style={{
             display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'flex-start',
-            marginBottom: '20px'
+            alignItems: 'center',
+            marginBottom: '16px'
           }}>
-            <div>
-              <div style={{
-                fontSize: '1rem',
-                fontWeight: 600,
-                color: '#ffffff',
-                marginBottom: '4px'
-              }}>
-                {card.title}
-              </div>
-              <div style={{
-                fontSize: '1.5rem',
-                fontWeight: 700,
-                color: '#ffffff'
-              }}>
-                {formatValue(card.currentValue, card.currency)}
-              </div>
-            </div>
-            
-            {/* Change indicator */}
+            {getInvestmentIcon(card.id)}
             <div style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '4px',
-              padding: '6px 12px',
-              background: card.changeType === 'positive' ? 'rgba(16, 185, 129, 0.1)' : 'rgba(239, 68, 68, 0.1)',
-              borderRadius: '8px',
-              border: `1px solid ${card.changeType === 'positive' ? 'rgba(16, 185, 129, 0.3)' : 'rgba(239, 68, 68, 0.3)'}`
+              fontSize: '0.9rem',
+              fontWeight: 500,
+              color: '#b0b3c7',
+              flex: 1
             }}>
-              <span style={{
-                fontSize: '0.85rem',
-                fontWeight: 600,
-                color: card.changeType === 'positive' ? '#10B981' : '#EF4444'
-              }}>
-                {formatChange(card.changePercentage, card.changeType)}
-              </span>
+              {card.title}
             </div>
+          </div>
+
+          {/* Amount */}
+          <div style={{
+            fontSize: '1.6rem',
+            fontWeight: 700,
+            color: '#ffffff',
+            marginBottom: '16px'
+          }}>
+            {formatValue(card.currentValue, card.currency)}
+          </div>
+          
+          {/* Change indicator */}
+          <div style={{
+            position: 'absolute',
+            top: '16px',
+            right: '16px',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '4px',
+            padding: '4px 8px',
+            background: card.changeType === 'positive' ? 'rgba(16, 185, 129, 0.1)' : 'rgba(239, 68, 68, 0.1)',
+            borderRadius: '8px',
+            border: `1px solid ${card.changeType === 'positive' ? 'rgba(16, 185, 129, 0.3)' : 'rgba(239, 68, 68, 0.3)'}`
+          }}>
+            <span style={{
+              fontSize: '0.7rem',
+              fontWeight: 600,
+              color: card.changeType === 'positive' ? '#10B981' : '#EF4444'
+            }}>
+              {formatChange(card.changePercentage, card.changeType)}
+            </span>
           </div>
           
           {/* Chart */}
           <div style={{
             display: 'flex',
             justifyContent: 'center',
-            marginBottom: '16px'
+            marginBottom: '12px'
           }}>
-            {renderLineChart(card.chartData, card.chartData.datasets[0].borderColor)}
+            {renderLineChart(card.chartData, card.chartData?.datasets?.[0]?.borderColor)}
           </div>
           
           {/* Chart info */}
           <div style={{
-            fontSize: '0.8rem',
+            fontSize: '0.75rem',
             color: '#b0b3c7',
             textAlign: 'center',
             fontWeight: 400
           }}>
-            {card.chartData.datasets[0].label}
+            {card.chartData?.datasets?.[0]?.label || 'Investment Value'}
           </div>
         </div>
       ))}

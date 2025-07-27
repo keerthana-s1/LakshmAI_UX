@@ -1,5 +1,5 @@
 import './App.css';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Sidebar from './Sidebar';
 import MainHeader from './MainHeader';
 import DashboardCards from './DashboardCards';
@@ -16,17 +16,79 @@ import { v4 as uuidv4 } from 'uuid';
 function App() {
   const [activeDashboard, setActiveDashboard] = useState('Dashboard');
   const [showLogin, setShowLogin] = useState(false);
-  const [userId, setUserId] = useState('');
-  const [password, setPassword] = useState('');
-  const [loginError, setLoginError] = useState('');
   const [signedIn, setSignedIn] = useState(() => {
     return localStorage.getItem('signedIn') === 'true';
   });
-  const [sessionId, setSessionId] = useState(null);
+  const [sessionId, setSessionId] = useState(() => {
+    return localStorage.getItem('sessionId') || null;
+  });
+  const [userId, setUserId] = useState(() => {
+    return localStorage.getItem('userId') || '';
+  });
+  const [password, setPassword] = useState('');
+  const [loginError, setLoginError] = useState('');
+  
+  // Dashboard data state
+  const [dashboardData, setDashboardData] = useState(null);
+  const [dashboardLoading, setDashboardLoading] = useState(false);
+  const [dashboardError, setDashboardError] = useState(null);
+  
+  // Chat response data state
+  const [chartConfigData, setChartConfigData] = useState(null);
+  const [todoData, setTodoData] = useState(null);
+  
+  // Ref to prevent multiple API calls in StrictMode
+  const hasLoadedData = useRef(false);
 
   useEffect(() => {
     setShowLogin(!signedIn);
   }, [signedIn]);
+
+  // Load dashboard data once when home dashboard is active and user is signed in
+  useEffect(() => {
+    if (activeDashboard === 'Dashboard' && signedIn && !dashboardData && !hasLoadedData.current) {
+      hasLoadedData.current = true;
+      
+      const fetchDashboardData = async () => {
+        try {
+          setDashboardLoading(true);
+          setDashboardError(null);
+          
+          // Temporarily use dashboardWidgets1.json instead of API
+          const response = await fetch('/dashboardWidgets1.json');
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+          const data = await response.json();
+          setDashboardData(data);
+          
+        } catch (err) {
+          console.error('Error loading dashboard data:', err);
+          setDashboardError('Failed to load dashboard data');
+          setDashboardData(null);
+        } finally {
+          setDashboardLoading(false);
+        }
+      };
+
+      fetchDashboardData();
+    }
+  }, [activeDashboard, signedIn]);
+
+  // Handle chat response data
+  const handleChatResponse = (responseData) => {
+    console.log('Received chat response data:', responseData);
+    if (responseData.chartConfig) {
+      console.log('Setting chart config:', responseData.chartConfig);
+      setChartConfigData(responseData.chartConfig);
+      // Automatically switch to Analytics tab when chart data is received
+      setActiveDashboard('Analytics');
+    }
+    if (responseData.todoData) {
+      console.log('Setting todo data:', responseData.todoData);
+      setTodoData(responseData.todoData);
+    }
+  };
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -37,7 +99,12 @@ function App() {
       setSessionId(newSessionId);
       setSignedIn(true);
       localStorage.setItem('signedIn', 'true');
+      localStorage.setItem('sessionId', newSessionId);
+      localStorage.setItem('userId', userId);
       setShowLogin(false);
+      // Clear dashboard data and reset ref to trigger fresh API call after login
+      setDashboardData(null);
+      hasLoadedData.current = false;
     } catch (err) {
       setLoginError('Login failed. Please check your credentials.');
     }
@@ -46,32 +113,80 @@ function App() {
   const handleLogout = () => {
     setSignedIn(false);
     localStorage.removeItem('signedIn');
+    localStorage.removeItem('sessionId');
+    localStorage.removeItem('userId');
     setShowLogin(true);
     setUserId('');
     setPassword('');
     setSessionId(null);
+    setDashboardData(null);
+    hasLoadedData.current = false;
+    // Clear chat response data
+    setChartConfigData(null);
+    setTodoData(null);
   };
 
   let dashboardContent;
   switch (activeDashboard) {
     case 'Dashboard':
-      dashboardContent = <>
-        <DashboardCards />
-        <InvestmentCharts />
-        <section className="dashboard-lower">
-          <MyCard />
-          <ExpenseChart />
-        </section>
-        <section className="dashboard-charts">
-          <DashboardCharts />
-        </section>
-      </>;
+      if (dashboardLoading) {
+        dashboardContent = (
+          <div style={{ 
+            display: 'flex', 
+            justifyContent: 'center', 
+            alignItems: 'center', 
+            height: '100%',
+            color: '#b0b3c7',
+            fontSize: '1.1rem'
+          }}>
+            Loading dashboard...
+          </div>
+        );
+      } else if (dashboardError) {
+        dashboardContent = (
+          <div style={{ 
+            display: 'flex', 
+            justifyContent: 'center', 
+            alignItems: 'center', 
+            height: '100%',
+            color: '#ef4444',
+            fontSize: '1.1rem'
+          }}>
+            {dashboardError}
+          </div>
+        );
+      } else if (dashboardData) {
+        dashboardContent = <>
+          <DashboardCards dashboardData={dashboardData} />
+          <InvestmentCharts dashboardData={dashboardData} />
+          <section className="dashboard-lower">
+            <MyCard />
+            <ExpenseChart dashboardData={dashboardData} />
+          </section>
+          <section className="dashboard-charts">
+            <DashboardCharts dashboardData={dashboardData} />
+          </section>
+        </>;
+      } else {
+        dashboardContent = (
+          <div style={{ 
+            display: 'flex', 
+            justifyContent: 'center', 
+            alignItems: 'center', 
+            height: '100%',
+            color: '#b0b3c7',
+            fontSize: '1.1rem'
+          }}>
+            No dashboard data available
+          </div>
+        );
+      }
       break;
     case 'Analytics':
-      dashboardContent = <AnalyticsDashboard />;
+      dashboardContent = <AnalyticsDashboard chartConfig={chartConfigData} />;
       break;
     case 'My Tasks':
-      dashboardContent = <MyTasksDashboard />;
+      dashboardContent = <MyTasksDashboard todoData={todoData} />;
       break;
     case 'Accounts':
       dashboardContent = <div style={{ color: '#fff', padding: 32 }}><h1>Accounts</h1><p>Accounts dashboard coming soon...</p></div>;
@@ -115,7 +230,7 @@ function App() {
               <main className="main-content" style={{ flex: 1, minWidth: 0 }}>
                 {dashboardContent}
               </main>
-              {activeDashboard !== 'Settings' && <ChatPanel userId={userId} sessionId={sessionId} />}
+              {activeDashboard !== 'Settings' && <ChatPanel userId={userId} sessionId={sessionId} onChatResponse={handleChatResponse} />}
             </div>
           </div>
         </>

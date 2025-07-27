@@ -1,4 +1,10 @@
 {
+  "dashboardConfig": {
+    "theme": "light",
+    "currency": "₹",
+    "language": "en-IN",
+    "lastUpdated": "2024-07-31T05:46:00Z"
+  },
   "dashboardWidgets": [
     {
       "id": "bankAccounts",
@@ -6,19 +12,19 @@
       "type": "card",
       "chartType": "line",
       "chartData": {
-        "labels": ["2024-01-01", "2024-02-01", "2024-03-01", "2024-04-01"],
+        "labels": ["2024-07-22", "2024-07-23", "2024-07-24", "2024-07-25", "2024-07-26", "2024-07-27", "2024-07-28"],
         "datasets": [
           {
-            "label": "Balance",
-            "data": [180000, 185000, 190000, 195297],
-            "backgroundColor": "#6A5ACD",
-            "borderColor": "#6A5ACD"
+            "label": "Account Balance",
+            "data": [10000, 10500, 11000, 10800, 11200, 11500, 12000],
+            "borderColor": "#2563EB",
+            "fill": false
           }
         ]
       },
       "currentValue": 195297,
       "currency": "₹",
-      "changePercentage": 6.29,
+      "changePercentage": 0.05,
       "changeType": "positive"
     },
     {
@@ -27,19 +33,19 @@
       "type": "card",
       "chartType": "line",
       "chartData": {
-        "labels": ["2024-01-01", "2024-02-01", "2024-03-01", "2024-04-01"],
+        "labels": ["2024-07-22", "2024-07-23", "2024-07-24", "2024-07-25", "2024-07-26", "2024-07-27", "2024-07-28"],
         "datasets": [
           {
-            "label": "Value",
-            "data": [150000, 160000, 170000, 177605],
-            "backgroundColor": "#87CEEB",
-            "borderColor": "#87CEEB"
+            "label": "Investment Value",
+            "data": [5000, 5100, 5200, 5300, 5400, 5500, 5600],
+            "borderColor": "#10B981",
+            "fill": false
           }
         ]
       },
       "currentValue": 177605,
       "currency": "₹",
-      "changePercentage": 12.29,
+      "changePercentage": 0.03,
       "changeType": "positive"
     },
     {
@@ -48,20 +54,20 @@
       "type": "card",
       "chartType": "line",
       "chartData": {
-        "labels": ["2024-01-01", "2024-02-01", "2024-03-01", "2024-04-01"],
+        "labels": ["2024-07-22", "2024-07-23", "2024-07-24", "2024-07-25", "2024-07-26", "2024-07-27", "2024-07-28"],
         "datasets": [
           {
-            "label": "Value",
-            "data": [210000, 205000, 202000, 200642],
-            "backgroundColor": "#FFD700",
-            "borderColor": "#FFD700"
+            "label": "Investment Value",
+            "data": [2500, 2550, 2600, 2650, 2700, 2750, 2800],
+            "borderColor": "#EAB308",
+            "fill": false
           }
         ]
       },
       "currentValue": 200642,
       "currency": "₹",
-      "changePercentage": -2.00,
-      "changeType": "negative"
+      "changePercentage": 0.02,
+      "changeType": "positive"
     },
     {
       "id": "usStocks",
@@ -69,19 +75,79 @@
       "type": "card",
       "chartType": "line",
       "chartData": {
-        "labels": ["2024-01-01", "2024-02-01", "2024-03-01", "2024-04-01"],
+        "labels": ["2024-07-22", "2024-07-23", "2024-07-24", "2024-07-25", "2024-07-26", "2024-07-27", "2024-07-28"],
         "datasets": [
           {
-            "label": "Value",
-            "data": [25000, 27000, 29000, 30071],
-            "backgroundColor": "#32CD32",
-            "borderColor": "#32CD32"
+            "label": "Investment Value",
+            "data": [1000, 1010, 1020, 1030, 1040, 1050, 1060],
+            "borderColor": "#F43F5E",
+            "fill": false
           }
         ]
       },
       "currentValue": 30071,
       "currency": "₹",
-      "changePercentage": 10.29,
+      "changePercentage": 0.01,
+      "changeType": "positive"
+    },
+    {
+      "id": "creditCards",
+      "title": "Credit Cards",
+      "type": "card",
+      "chartType": "line",
+      "chartData": {
+        "labels": ["2024-07-22", "2024-07-23", "2024-07-24", "2024-07-25", "2024-07-26", "2024-07-27", "2024-07-28"],
+        "datasets": [
+          {
+            "label": "Outstanding Balance",
+            "data": [500, 480, 460, 440, 420, 400, 380],
+            "borderColor": "#6366F1",
+            "fill": false
+          }
+        ]
+      },
+      "currentValue": 11000,
+      "currency": "₹",
+      "changePercentage": 0.05,
+      "changeType": "negative"
+    },
+    {
+      "id": "netWorth",
+      "title": "Net Worth",
+      "type": "card",
+      "chartType": "line",
+      "chartData": {
+        "labels": ["2024-07-22", "2024-07-23", "2024-07-24", "2024-07-25", "2024-07-26", "2024-07-27", "2024-07-28"],
+        "datasets": [
+          {
+            "label": "Net Worth",
+            "data": [18000, 18640, 19260, 19740, 20480, 21300, 22140],
+            "borderColor": "#064E3B",
+            "fill": false
+          }
+        ]
+      },
+      "currentValue": 750726,
+      "currency": "₹",
+      "changePercentage": 0.04,
+      "changeType": "positive"
+    },
+    {
+      "id": "creditScore",
+      "title": "Credit Score",
+      "type": "card",
+      "currentValue": 746,
+      "currency": "",
+      "changePercentage": 0,
+      "changeType": "positive"
+    },
+    {
+      "id": "epfBalance",
+      "title": "EPF Balance",
+      "type": "card",
+      "currentValue": 211111,
+      "currency": "₹",
+      "changePercentage": 0.01,
       "changeType": "positive"
     },
     {
@@ -91,92 +157,110 @@
       "dashboard": "homeDashboard",
       "chartType": "doughnut",
       "chartData": {
-        "labels": ["Food & Dining", "Transportation", "Shopping"],
+        "labels": ["Food", "Travel", "Entertainment", "Shopping"],
         "datasets": [
           {
-            "label": "Expenses",
-            "data": [3500, 2500, 1500],
-            "backgroundColor": ["#6A5ACD", "#87CEEB", "#FFD700"]
+            "data": [3000, 1500, 1000, 2000],
+            "backgroundColor": ["#EF4444", "#3B82F6", "#10B981", "#EAB308"],
+            "hoverBackgroundColor": ["#EF4444", "#3B82F6", "#10B981", "#EAB308"]
           }
         ]
-      },
-      "total": 7500,
-      "period": "April 2024"
+      }
     },
     {
-      "id": "creditCardOutstanding",
-      "title": "Credit Card Outstanding",
-      "type": "chart",
-      "dashboard": "homeDashboard",
-      "chartType": "line",
-      "chartData": {
-        "labels": ["2024-01-01", "2024-02-01", "2024-03-01", "2024-04-01"],
-        "datasets": [
-          {
-            "label": "Outstanding",
-            "data": [8000, 7000, 6000, 5000],
-            "backgroundColor": "#FF6347",
-            "borderColor": "#FF6347"
-          }
-        ]
-      },
-      "currentOutstanding": 5000,
-      "cardNumber": "XXXXXX2724",
-      "expiryDate": "09/25"
-    },
-    {
-      "id": "creditScoreHistory",
-      "title": "Credit Score History",
-      "type": "chart",
-      "dashboard": "homeDashboard",
-      "chartType": "line",
-      "chartData": {
-        "labels": ["2019-10-01", "2020-01-01", "2020-04-01"],
-        "datasets": [
-          {
-            "label": "Credit Score",
-            "data": [720, 735, 746],
-            "backgroundColor": "#4682B4",
-            "borderColor": "#4682B4"
-          }
-        ]
-      },
-      "currentScore": 746
-    },
-    {
-      "id": "netWorthOverview",
-      "title": "Net Worth Overview",
+      "id": "incomeVsExpense",
+      "title": "Income vs Expense",
       "type": "chart",
       "dashboard": "homeDashboard",
       "chartType": "bar",
       "chartData": {
-        "labels": ["Assets", "Liabilities"],
+        "labels": ["July"],
         "datasets": [
           {
-            "label": "Value",
-            "data": [750726, 64000],
-            "backgroundColor": ["#32CD32", "#FF6347"]
+            "label": "Income",
+            "data": [10000],
+            "backgroundColor": "#10B981"
+          },
+          {
+            "label": "Expense",
+            "data": [7500],
+            "backgroundColor": "#EF4444"
           }
         ]
-      },
-      "netWorth": 686726
+      }
     },
     {
-      "id": "assetBreakdown",
-      "title": "Asset Breakdown",
+      "id": "investmentPortfolio",
+      "title": "Investment Portfolio",
       "type": "chart",
       "dashboard": "homeDashboard",
       "chartType": "pie",
       "chartData": {
-        "labels": ["Savings Accounts", "Mutual Funds", "Indian Securities", "EPF", "US Securities"],
+        "labels": ["Mutual Funds", "Stocks", "US Stocks"],
         "datasets": [
           {
-            "label": "Assets",
-            "data": [195297, 177605, 200642, 211111, 30071],
-            "backgroundColor": ["#6A5ACD", "#87CEEB", "#FFD700", "#32CD32", "#FF6347"]
+            "data": [177605, 200642, 30071],
+            "backgroundColor": ["#10B981", "#EAB308", "#F43F5E"],
+            "hoverBackgroundColor": ["#10B981", "#EAB308", "#F43F5E"]
           }
         ]
       }
     }
-  ]
-} 
+  ],
+  "userProfile": {
+    "name": "John Doe",
+    "phoneNumber": "9876543210",
+    "email": "john.doe@example.com",
+    "address": "123 Main St, Anytown",
+    "dob": "1990-01-01"
+  },
+  "notifications": [
+    {
+      "id": "notification1",
+      "type": "info",
+      "message": "Your credit card bill is due soon.",
+      "date": "2024-07-31"
+    },
+    {
+      "id": "notification2",
+      "type": "alert",
+      "message": "Low balance in your savings account.",
+      "date": "2024-07-30"
+    }
+  ],
+  "quickActions": [
+    {
+      "id": "quickAction1",
+      "label": "Pay Bills",
+      "icon": "bill"
+    },
+    {
+      "id": "quickAction2",
+      "label": "Transfer Money",
+      "icon": "transfer"
+    },
+    {
+      "id": "quickAction3",
+      "label": "Invest",
+      "icon": "invest"
+    }
+  ],
+  "dataSummary": {
+    "totalAssets": 794629,
+    "totalLiabilities": 75000,
+    "netWorth": 750726,
+    "creditScore": 746,
+    "totalTransactions": 100,
+    "investmentReturns": 0.05,
+    "epfBalance": 211111,
+    "stockHoldings": 200642,
+    "mutualFundValue": 177605,
+    "savingsBalance": 195297,
+    "usSecuritiesValue": 30071,
+    "creditCardOutstanding": 75000,
+    "totalCreditAccounts": 6,
+    "activeCreditAccounts": 6,
+    "lastDataUpdate": "2024-07-31T05:46:00Z"
+  },
+  "message": "Dashboard configuration loaded successfully"
+}

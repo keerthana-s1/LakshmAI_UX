@@ -1,0 +1,334 @@
+{
+  "dashboardConfig": {
+    "theme": "light",
+    "currency": "INR",
+    "language": "en"
+  },
+  "dashboardWidgets": [
+    {
+      "id": "netWorth",
+      "title": "Net Worth",
+      "type": "card",
+      "currentValue": 750726,
+      "currency": "₹",
+      "changePercentage": 5.0,
+      "changeType": "positive",
+      "growthRate": "1.2% monthly average",
+      "totalReturn": "₹35,000"
+    },
+    {
+      "id": "mutualFunds",
+      "title": "Mutual Funds",
+      "type": "card",
+      "chartType": "line",
+      "chartData": {
+        "labels": [
+          "2024-01-01",
+          "2024-02-01",
+          "2024-03-01",
+          "2024-04-01",
+          "2024-05-01",
+          "2024-06-01"
+        ],
+        "datasets": [
+          {
+            "label": "Portfolio Value",
+            "data": [
+              150000,
+              155000,
+              162000,
+              168000,
+              173000,
+              177605
+            ],
+            "backgroundColor": "#87CEEB",
+            "borderColor": "#87CEEB",
+            "fill": false,
+            "tension": 0.4
+          }
+        ]
+      },
+      "currentValue": 177605,
+      "currency": "₹",
+      "changePercentage": 18.4,
+      "changeType": "positive",
+      "growthRate": "4.6% monthly average",
+      "totalReturn": "₹27,605"
+    },
+    {
+      "id": "stocks",
+      "title": "Stocks",
+      "type": "card",
+      "chartType": "line",
+      "chartData": {
+        "labels": [
+          "2024-01-01",
+          "2024-02-01",
+          "2024-03-01",
+          "2024-04-01",
+          "2024-05-01",
+          "2024-06-01"
+        ],
+        "datasets": [
+          {
+            "label": "Portfolio Value",
+            "data": [
+              190000,
+              195000,
+              198000,
+              201000,
+              200000,
+              200642
+            ],
+            "backgroundColor": "#FFD700",
+            "borderColor": "#FFD700",
+            "fill": false,
+            "tension": 0.4
+          }
+        ]
+      },
+      "currentValue": 200642,
+      "currency": "₹",
+      "changePercentage": 5.6,
+      "changeType": "positive",
+      "growthRate": "1.4% monthly average",
+      "totalReturn": "₹10,642"
+    },
+    {
+      "id": "usStocks",
+      "title": "US Stocks",
+      "type": "card",
+      "chartType": "line",
+      "chartData": {
+        "labels": [
+          "2024-01-01",
+          "2024-02-01",
+          "2024-03-01",
+          "2024-04-01",
+          "2024-05-01",
+          "2024-06-01"
+        ],
+        "datasets": [
+          {
+            "label": "Portfolio Value",
+            "data": [
+              28000,
+              28500,
+              29000,
+              29500,
+              30000,
+              30071
+            ],
+            "backgroundColor": "#98FB98",
+            "borderColor": "#98FB98",
+            "fill": false,
+            "tension": 0.4
+          }
+        ]
+      },
+      "currentValue": 30071,
+      "currency": "₹",
+      "changePercentage": 7.1,
+      "changeType": "positive",
+      "growthRate": "1.8% monthly average",
+      "totalReturn": "₹2,071"
+    },
+    {
+      "id": "epfBalance",
+      "title": "EPF Balance",
+      "type": "card",
+      "chartType": "line",
+      "chartData": {
+        "labels": [
+          "2024-01-01",
+          "2024-02-01",
+          "2024-03-01",
+          "2024-04-01",
+          "2024-05-01",
+          "2024-06-01"
+        ],
+        "datasets": [
+          {
+            "label": "Balance",
+            "data": [
+              200000,
+              202000,
+              205000,
+              207000,
+              210000,
+              211111
+            ],
+            "backgroundColor": "#ADD8E6",
+            "borderColor": "#ADD8E6",
+            "fill": false,
+            "tension": 0.4
+          }
+        ]
+      },
+      "currentValue": 211111,
+      "currency": "₹",
+      "changePercentage": 3.1,
+      "changeType": "positive",
+      "growthRate": "0.8% monthly average",
+      "totalReturn": "₹6,111"
+    },
+    {
+      "id": "investmentGrowth",
+      "title": "Investment Growth Over Time",
+      "type": "chart",
+      "dashboard": "homeDashboard",
+      "chartType": "line",
+      "chartData": {
+        "labels": [
+          "Jan",
+          "Feb",
+          "Mar",
+          "Apr",
+          "May",
+          "Jun"
+        ],
+        "datasets": [
+          {
+            "label": "Mutual Funds",
+            "data": [
+              150000,
+              155000,
+              162000,
+              168000,
+              173000,
+              177605
+            ],
+            "backgroundColor": "#87CEEB",
+            "borderColor": "#87CEEB",
+            "fill": false,
+            "tension": 0.4
+          },
+          {
+            "label": "Stocks",
+            "data": [
+              190000,
+              195000,
+              198000,
+              201000,
+              200000,
+              200642
+            ],
+            "backgroundColor": "#FFD700",
+            "borderColor": "#FFD700",
+            "fill": false,
+            "tension": 0.4
+          }
+        ]
+      },
+      "growthMetrics": {
+        "mutualFundsGrowth": "18.4%",
+        "stocksGrowth": "5.6%",
+        "overallGrowth": "12.0%"
+      }
+    },
+    {
+      "id": "creditScore",
+      "title": "Credit Score",
+      "type": "card",
+      "currentValue": 746,
+      "maxScore": 900,
+      "change": 0,
+      "changeType": "neutral",
+      "scoreType": "Experian"
+    },
+    {
+      "id": "spendingSummary",
+      "title": "Spending Summary",
+      "type": "card",
+      "currentMonthSpending": 12000,
+      "lastMonthSpending": 11500,
+      "currency": "₹",
+      "categoryBreakdown": {
+        "food": 3000,
+        "entertainment": 2500,
+        "utilities": 2000,
+        "shopping": 4500
+      }
+    },
+    {
+      "id": "liabilities",
+      "title": "Liabilities",
+      "type": "card",
+      "currentValue": 64000,
+      "currency": "₹",
+      "breakdown": {
+        "homeLoan": 17000,
+        "vehicleLoan": 5000,
+        "otherLoan": 42000
+      }
+    },
+    {
+      "id": "cashFlow",
+      "title": "Cash Flow",
+      "type": "card",
+      "income": 80000,
+      "expenses": 70000,
+      "currency": "₹",
+      "netCashFlow": 10000
+    },
+    {
+      "id": "savingsAccount",
+      "title": "Savings Account",
+      "type": "card",
+      "currentValue": 195297,
+      "currency": "₹",
+      "interestRate": "3.5%",
+      "lastUpdated": "2024-07-09"
+    }
+  ],
+  "userProfile": {
+    "name": "Prateek Patnaik",
+    "phoneNumber": "9876543210",
+    "email": "prateek@example.com",
+    "occupation": "Software Engineer"
+  },
+  "notifications": [
+    {
+      "id": "notification1",
+      "type": "investmentAlert",
+      "message": "Your mutual fund portfolio has increased by 5% this month.",
+      "timestamp": "2024-07-10T08:30:00Z"
+    },
+    {
+      "id": "notification2",
+      "type": "spendingAlert",
+      "message": "You have exceeded your spending limit for the shopping category.",
+      "timestamp": "2024-07-09T18:00:00Z"
+    }
+  ],
+  "quickActions": [
+    {
+      "id": "quickAction1",
+      "label": "Invest in Stocks",
+      "actionType": "invest"
+    },
+    {
+      "id": "quickAction2",
+      "label": "Pay Bills",
+      "actionType": "payBills"
+    }
+  ],
+  "dataSummary": {
+    "totalAssets": 750726,
+    "totalLiabilities": 64000,
+    "netWorth": 686726,
+    "creditScore": 746,
+    "totalTransactions": 70,
+    "investmentReturns": 136.63,
+    "investmentGrowth": "15.2%",
+    "epfBalance": 211111,
+    "stockHoldings": 200642,
+    "mutualFundValue": 177605,
+    "savingsBalance": 195297,
+    "usSecuritiesValue": 30071,
+    "creditCardOutstanding": 11000,
+    "totalCreditAccounts": 6,
+    "activeCreditAccounts": 6,
+    "lastDataUpdate": "2024-07-09T15:29:19Z"
+  }
+}
