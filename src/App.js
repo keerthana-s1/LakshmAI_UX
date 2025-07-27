@@ -29,6 +29,10 @@ function App() {
   const [dashboardLoading, setDashboardLoading] = useState(false);
   const [dashboardError, setDashboardError] = useState(null);
   
+  // Chat response data state
+  const [chartConfigData, setChartConfigData] = useState(null);
+  const [todoData, setTodoData] = useState(null);
+  
   // Ref to prevent multiple API calls in StrictMode
   const hasLoadedData = useRef(false);
 
@@ -67,6 +71,19 @@ function App() {
     }
   }, [activeDashboard, signedIn]);
 
+  // Handle chat response data
+  const handleChatResponse = (responseData) => {
+    console.log('Received chat response data:', responseData);
+    if (responseData.chartConfig) {
+      console.log('Setting chart config:', responseData.chartConfig);
+      setChartConfigData(responseData.chartConfig);
+    }
+    if (responseData.todoData) {
+      console.log('Setting todo data:', responseData.todoData);
+      setTodoData(responseData.todoData);
+    }
+  };
+
   const handleLogin = async (e) => {
     e.preventDefault();
     setLoginError('');
@@ -94,6 +111,9 @@ function App() {
     setSessionId(null);
     setDashboardData(null);
     hasLoadedData.current = false;
+    // Clear chat response data
+    setChartConfigData(null);
+    setTodoData(null);
   };
 
   let dashboardContent;
@@ -153,10 +173,10 @@ function App() {
       }
       break;
     case 'Analytics':
-      dashboardContent = <AnalyticsDashboard />;
+      dashboardContent = <AnalyticsDashboard chartConfig={chartConfigData} />;
       break;
     case 'My Tasks':
-      dashboardContent = <MyTasksDashboard />;
+      dashboardContent = <MyTasksDashboard todoData={todoData} />;
       break;
     case 'Accounts':
       dashboardContent = <div style={{ color: '#fff', padding: 32 }}><h1>Accounts</h1><p>Accounts dashboard coming soon...</p></div>;
@@ -200,7 +220,7 @@ function App() {
               <main className="main-content" style={{ flex: 1, minWidth: 0 }}>
                 {dashboardContent}
               </main>
-              {activeDashboard !== 'Settings' && <ChatPanel userId={userId} sessionId={sessionId} />}
+              {activeDashboard !== 'Settings' && <ChatPanel userId={userId} sessionId={sessionId} onChatResponse={handleChatResponse} />}
             </div>
           </div>
         </>
