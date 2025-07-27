@@ -18,7 +18,16 @@ function ChatPanel({ userId, sessionId, onChatResponse }) {
 
   const handleSend = async (e) => {
     e.preventDefault();
-    if (!input.trim() || !sessionId || !userId) return;
+    console.log('ChatPanel handleSend called with:', { input, sessionId, userId });
+    
+    if (!input.trim() || !sessionId || !userId) {
+      console.log('ChatPanel validation failed:', { 
+        hasInput: !!input.trim(), 
+        hasSessionId: !!sessionId, 
+        hasUserId: !!userId 
+      });
+      return;
+    }
     
     const userMsg = { from: 'user', name: 'You', text: input, time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) };
     setMessages((msgs) => [...msgs, userMsg]);
@@ -26,7 +35,9 @@ function ChatPanel({ userId, sessionId, onChatResponse }) {
     setLoading(true);
     
     try {
+      console.log('Calling fetchChatResponse with:', { message: userMsg.text, userId, sessionId });
       const response = await fetchChatResponse(userMsg.text, userId, sessionId);
+      console.log('fetchChatResponse returned:', response);
       
       // Handle the new structured response
       let botText = '';
@@ -44,21 +55,36 @@ function ChatPanel({ userId, sessionId, onChatResponse }) {
               // Parse the response array to find the JSON content
               const responseArray = JSON.parse(response.response);
               
-              // Find the last message with text content
+              // Find the last message with text content that contains the structured response
               for (let i = responseArray.length - 1; i >= 0; i--) {
                 const item = responseArray[i];
                 if (item.content && item.content.parts) {
                   for (const part of item.content.parts) {
                     if (part.text) {
-                      // Check if this text contains JSON structure
+                      // Check if this text contains the structured response format
                       if (part.text.includes('TextResp') && part.text.includes('ChartConfigResp') && part.text.includes('ToDoResp')) {
                         try {
                           // Extract JSON from the text (remove markdown code blocks if present)
                           let jsonText = part.text;
-                          if (jsonText.includes('```json')) {
-                            jsonText = jsonText.split('```json')[1].split('```')[0];
+                          
+                          // Look for the JSON structure within the text
+                          const jsonMatch = jsonText.match(/```json\s*(\{[\s\S]*?\})\s*```/);
+                          if (jsonMatch) {
+                            jsonText = jsonMatch[1];
                           } else if (jsonText.includes('```')) {
-                            jsonText = jsonText.split('```')[1];
+                            // Fallback: extract content between ``` markers
+                            const codeBlocks = jsonText.split('```');
+                            for (let j = 1; j < codeBlocks.length; j += 2) {
+                              try {
+                                const parsed = JSON.parse(codeBlocks[j]);
+                                if (parsed.TextResp || parsed.ChartConfigResp || parsed.ToDoResp) {
+                                  jsonText = codeBlocks[j];
+                                  break;
+                                }
+                              } catch (e) {
+                                // Continue to next code block
+                              }
+                            }
                           }
                           
                           const parsedData = JSON.parse(jsonText);
@@ -78,7 +104,13 @@ function ChatPanel({ userId, sessionId, onChatResponse }) {
                           break;
                         } catch (parseError) {
                           console.error('Error parsing JSON from response:', parseError);
-                          botText = part.text; // Fallback to raw text
+                          // Try to extract just the TextResp as fallback
+                          const textMatch = part.text.match(/TextResp["\s]*:\s*["`]([^"`]+)["`]/);
+                          if (textMatch) {
+                            botText = textMatch[1];
+                          } else {
+                            botText = part.text; // Fallback to raw text
+                          }
                         }
                       }
                     }
@@ -149,6 +181,18 @@ function ChatPanel({ userId, sessionId, onChatResponse }) {
   return (
     <aside className="chat-panel">
       <div className="chat-panel__container">
+        {/* Debug info - remove this later */}
+        <div style={{ 
+          background: '#1f2937', 
+          padding: '8px', 
+          margin: '8px', 
+          borderRadius: '4px', 
+          fontSize: '12px', 
+          color: '#9ca3af' 
+        }}>
+          Debug: userId={userId}, sessionId={sessionId ? 'set' : 'null'}
+        </div>
+        
         <div className="chat-messages">
           {messages.map((msg, idx) => (
             <div key={idx} className={`chat-message-row chat-message-row--${msg.from}`}>

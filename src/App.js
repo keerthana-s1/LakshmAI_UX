@@ -16,13 +16,17 @@ import { v4 as uuidv4 } from 'uuid';
 function App() {
   const [activeDashboard, setActiveDashboard] = useState('Dashboard');
   const [showLogin, setShowLogin] = useState(false);
-  const [userId, setUserId] = useState('');
-  const [password, setPassword] = useState('');
-  const [loginError, setLoginError] = useState('');
   const [signedIn, setSignedIn] = useState(() => {
     return localStorage.getItem('signedIn') === 'true';
   });
-  const [sessionId, setSessionId] = useState(null);
+  const [sessionId, setSessionId] = useState(() => {
+    return localStorage.getItem('sessionId') || null;
+  });
+  const [userId, setUserId] = useState(() => {
+    return localStorage.getItem('userId') || '';
+  });
+  const [password, setPassword] = useState('');
+  const [loginError, setLoginError] = useState('');
   
   // Dashboard data state
   const [dashboardData, setDashboardData] = useState(null);
@@ -77,6 +81,8 @@ function App() {
     if (responseData.chartConfig) {
       console.log('Setting chart config:', responseData.chartConfig);
       setChartConfigData(responseData.chartConfig);
+      // Automatically switch to Analytics tab when chart data is received
+      setActiveDashboard('Analytics');
     }
     if (responseData.todoData) {
       console.log('Setting todo data:', responseData.todoData);
@@ -93,6 +99,8 @@ function App() {
       setSessionId(newSessionId);
       setSignedIn(true);
       localStorage.setItem('signedIn', 'true');
+      localStorage.setItem('sessionId', newSessionId);
+      localStorage.setItem('userId', userId);
       setShowLogin(false);
       // Clear dashboard data and reset ref to trigger fresh API call after login
       setDashboardData(null);
@@ -105,6 +113,8 @@ function App() {
   const handleLogout = () => {
     setSignedIn(false);
     localStorage.removeItem('signedIn');
+    localStorage.removeItem('sessionId');
+    localStorage.removeItem('userId');
     setShowLogin(true);
     setUserId('');
     setPassword('');
